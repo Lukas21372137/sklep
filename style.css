@@ -58,6 +58,17 @@ body {
     font-weight: bold;
 }
 
+.lockBox {
+    margin-top:10px;
+    padding:10px;
+    border-radius:10px;
+    background:#1f2937;
+    color:#fbbf24;
+    text-align:center;
+    font-size:14px;
+    border:1px solid #374151;
+}
+
 .stock {
     color: #9ca3af;
 }
