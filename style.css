@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b1220;
+    color: #e5e7eb;
+}
+
+/* TOPBAR */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background: #111827;
+    border-bottom: 1px solid #1f2937;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nav a, .nav span {
+    margin-left: 12px;
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+/* CONTAINER */
+.container {
+    padding: 24px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+/* CARD */
+.card {
+    background: #111827;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #1f2937;
+    transition: 0.25s;
+    animation: fadeIn 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    border-color: #3b82f6;
+}
+
+.price {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+.stock {
+    color: #9ca3af;
+}
+
+/* BUTTON */
+button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #2563eb;
+    transform: scale(1.03);
+}
+
+/* INPUTS */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #0f172a;
+    color: white;
+}
+
+/* LOGIN BOX */
+.auth-box {
+    max-width: 380px;
+    margin: 80px auto;
+    background: #111827;
+    padding: 24px;
+    border-radius: 14px;
+    border: 1px solid #1f2937;
+    animation: pop 0.4s ease;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+/* CART ANIMATION */
+.cart-bounce {
+    animation: bounce 0.4s ease;
+}
