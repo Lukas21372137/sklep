@@ -1,0 +1,9 @@
+# plik z hasłami do bazy
+.env
+
+# systemowe / śmieci
+.DS_Store
+Thumbs.db
+
+# cache / logi (na przyszłość)
+*.log
