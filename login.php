@@ -1,100 +1,219 @@
-<?php session_start(); include 'db.php'; ?>
+<?php
+session_start();
+include 'db.php';
+
+$error = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $login = trim($_POST['login']);
+    $haslo = $_POST['haslo'];
+
+    $stmt = $conn->prepare("
+        SELECT * FROM klienci
+        WHERE login = ?
+    ");
+
+    $stmt->bind_param("s", $login);
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+
+        $user = $result->fetch_assoc();
+
+        if (password_verify($haslo, $user['haslo'])) {
+
+            $_SESSION['user_id'] = $user['id'];
+
+            $_SESSION['role'] =
+                $user['role'] ?? 'user';
+
+            $_SESSION['login'] =
+                $user['login'];
+
+            header("Location: index.php");
+            exit;
+
+        } else {
+
+            $error = "❌ Nieprawidłowe hasło";
+
+        }
+
+    } else {
+
+        $error = "❌ Użytkownik nie istnieje";
+
+    }
+
+}
+?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pl">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
 
-    <style>
-        body {
-            margin:0;
-            font-family:Arial;
-            background:#0b1220;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            color:white;
-        }
+<meta charset="UTF-8">
 
-        .box {
-            width:320px;
-            background:#111827;
-            padding:24px;
-            border-radius:14px;
-            border:1px solid #1f2937;
-            animation: pop 0.3s ease;
-        }
+<title>Logowanie</title>
 
-        input {
-            width:100%;
-            padding:10px;
-            margin:8px 0;
-            border:none;
-            border-radius:8px;
-            background:#0f172a;
-            color:white;
-        }
+<style>
 
-        button {
-            width:100%;
-            padding:10px;
-            border:none;
-            border-radius:8px;
-            background:#3b82f6;
-            color:white;
-            cursor:pointer;
-        }
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0b1220;
+font-family:Arial;
+color:white;
+}
 
-        button:hover {
-            background:#2563eb;
-        }
+.box{
+width:360px;
+background:#111827;
+padding:30px;
+border-radius:18px;
+border:1px solid #1f2937;
+animation:fade 0.4s ease;
+}
 
-        @keyframes pop {
-            from {transform:scale(0.9); opacity:0;}
-            to {transform:scale(1); opacity:1;}
-        }
-    </style>
+h1{
+text-align:center;
+margin-bottom:25px;
+color:#60a5fa;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:none;
+border-radius:10px;
+background:#1f2937;
+color:white;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+.loginBtn{
+background:#3b82f6;
+color:white;
+}
+
+.backBtn{
+background:#374151;
+color:white;
+}
+
+.error{
+background:#7f1d1d;
+padding:10px;
+border-radius:10px;
+margin-bottom:15px;
+text-align:center;
+}
+
+.register{
+margin-top:15px;
+text-align:center;
+}
+
+.register a{
+color:#60a5fa;
+text-decoration:none;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+</style>
+
 </head>
 
 <body>
 
 <div class="box">
 
-<h2>🔐 Logowanie</h2>
+<h1>
+🔐 Logowanie
+</h1>
+
+<?php if($error): ?>
+
+<div class="error">
+
+<?= $error ?>
+
+</div>
+
+<?php endif; ?>
 
 <form method="POST">
 
-<input name="login" placeholder="Login">
-<input type="password" name="password" placeholder="Hasło">
+<input
+type="text"
+name="login"
+placeholder="Login"
+required
+>
 
-<button>Zaloguj</button>
+<input
+type="password"
+name="haslo"
+placeholder="Hasło"
+required
+>
+
+<button class="loginBtn">
+
+Zaloguj się
+
+</button>
 
 </form>
 
-<?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+<button
+class="backBtn"
+onclick="location.href='index.php'">
 
-    $login = $_POST['login'];
-    $pass = $_POST['password'];
+⬅ Powrót do sklepu
 
-    $res = $conn->query("SELECT * FROM users WHERE login='$login'");
-    $u = $res->fetch_assoc();
+</button>
 
-    if ($u && password_verify($pass, $u['password'])) {
+<div class="register">
 
-        $_SESSION['user_id'] = $u['id'];
-        $_SESSION['login'] = $u['login'];
+Nie masz konta?
 
-        header("Location: index.php");
-        exit;
+<a href="register.php">
 
-    } else {
-        echo "<p style='color:red'>❌ Błędne dane</p>";
-    }
-}
-?>
+Zarejestruj się
+
+</a>
+
+</div>
 
 </div>
 
